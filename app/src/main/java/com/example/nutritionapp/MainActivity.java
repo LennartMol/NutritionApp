@@ -21,11 +21,10 @@ import android.widget.TextView;
 import androidx.fragment.app.FragmentManager;
 
 public class MainActivity extends AppCompatActivity {
-
     private Button pickDateBtn;
     private TextView selectedDateTV;
-
     private String selectedDateString = "11-04-2024";
+    private String currentFragmentType = "Breakfast";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,25 +61,20 @@ public class MainActivity extends AppCompatActivity {
                                 String formattedMonth = String.format("%02d", monthOfYear + 1); // Add leading zero if less than 10
                                 selectedDateString = formattedDay + "-" + (formattedMonth) + "-" + year;
                                 selectedDateTV.setText(selectedDateString);
-                                FragmentManager fragmentManager = getSupportFragmentManager();
-                                Fragment currentFragment = fragmentManager.findFragmentById(R.id.fcvFragment);
-                                if (currentFragment instanceof BreakfastFragment) {
+                                setCurrentFragmentType();
+                                if (currentFragmentType == "Breakfast") {
                                     BreakfastFragment fragment = BreakfastFragment.newInstance(selectedDateString);
                                     replaceFragment(fragment);
-                                } else if (currentFragment instanceof LunchFragment) {
+                                } else if (currentFragmentType == "Lunch") {
                                     LunchFragment fragment = LunchFragment.newInstance(selectedDateString);
                                     replaceFragment(fragment);
-                                } else if (currentFragment instanceof DinnerFragment) {
+                                } else if (currentFragmentType == "Dinner") {
                                     DinnerFragment fragment = DinnerFragment.newInstance(selectedDateString);
                                     replaceFragment(fragment);
-                                } else if (currentFragment instanceof NutritionValuesFragment){
+                                } else if (currentFragmentType == "NutritionValues"){
                                     NutritionValuesFragment fragment = NutritionValuesFragment.newInstance(selectedDateString);
                                     replaceFragment(fragment);
-                                } else {
-                                    int one = 1;
-                                    // woohoo you caused a weird crash
                                 }
-
 
                             }
                         },
@@ -116,20 +110,24 @@ public class MainActivity extends AppCompatActivity {
         transaction.commit();
     }
 
-    public void onClickAddBreakfastFoodButton(View view){
-        String fragmentType = null;
-
+    public void setCurrentFragmentType() {
         FragmentManager fragmentManager = getSupportFragmentManager();
         Fragment currentFragment = fragmentManager.findFragmentById(R.id.fcvFragment);
         if (currentFragment instanceof BreakfastFragment) {
-            fragmentType = "Breakfast";
+            currentFragmentType = "Breakfast";
         } else if (currentFragment instanceof LunchFragment) {
-            fragmentType = "Lunch";
+            currentFragmentType = "Lunch";
         } else if (currentFragment instanceof DinnerFragment) {
-            fragmentType = "Dinner";
+            currentFragmentType = "Dinner";
+        } else if (currentFragment instanceof NutritionValuesFragment){
+            currentFragmentType = "NutritionValues";
         }
+    }
+
+    public void onClickAddBreakfastFoodButton(View view){
+        setCurrentFragmentType();
         Intent intent = new Intent(MainActivity.this, AddFoodActivity.class);
-        intent.putExtra("fragType", fragmentType);
+        intent.putExtra("fragType", currentFragmentType);
         intent.putExtra("date", selectedDateString);
         startActivity(intent);
     }
