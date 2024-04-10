@@ -115,4 +115,22 @@ public class MainActivity extends AppCompatActivity {
         transaction.replace(R.id.fcvFragment, fragment);
         transaction.commit();
     }
+
+    public void onClickAddBreakfastFoodButton(View view){
+        String fragmentType = null;
+
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        Fragment currentFragment = fragmentManager.findFragmentById(R.id.fcvFragment);
+        if (currentFragment instanceof BreakfastFragment) {
+            fragmentType = "Breakfast";
+        } else if (currentFragment instanceof LunchFragment) {
+            fragmentType = "Lunch";
+        } else if (currentFragment instanceof DinnerFragment) {
+            fragmentType = "Dinner";
+        }
+        Intent intent = new Intent(MainActivity.this, AddFoodActivity.class);
+        intent.putExtra("fragType", fragmentType);
+        intent.putExtra("date", selectedDateString);
+        startActivity(intent);
+    }
 }

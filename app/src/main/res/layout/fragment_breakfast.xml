@@ -23,7 +23,7 @@
         android:layout_height="671dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/buttonAddFood" />
+        app:layout_constraintTop_toBottomOf="@+id/buttonAddBreakfastFood" />
 
     <TextView
         android:id="@+id/textView2"
@@ -36,9 +36,10 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
-        android:id="@+id/buttonAddFood"
+        android:id="@+id/buttonAddBreakfastFood"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:onClick="onClickAddBreakfastFoodButton"
         android:text="Add food"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/textView2"
