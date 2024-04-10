@@ -8,7 +8,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
 import org.json.JSONArray;
@@ -33,7 +32,7 @@ public class BreakfastFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_breakfast, container, false);
-        breakfastView = view.findViewById(R.id.breakfastView);
+        breakfastView = view.findViewById(R.id.dinnerView);
         loadData();
         return view;
 
