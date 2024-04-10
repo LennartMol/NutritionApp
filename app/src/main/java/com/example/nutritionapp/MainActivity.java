@@ -73,8 +73,12 @@ public class MainActivity extends AppCompatActivity {
                                 } else if (currentFragment instanceof DinnerFragment) {
                                     DinnerFragment fragment = DinnerFragment.newInstance(selectedDateString);
                                     replaceFragment(fragment);
+                                } else if (currentFragment instanceof NutritionValuesFragment){
+                                    NutritionValuesFragment fragment = NutritionValuesFragment.newInstance(selectedDateString);
+                                    replaceFragment(fragment);
                                 } else {
                                     int one = 1;
+                                    // woohoo you caused a weird crash
                                 }
 
 
@@ -87,7 +91,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void onClickValuesButton(View view) {
-        replaceFragment(new NutritionValuesFragment());
+        NutritionValuesFragment fragment = NutritionValuesFragment.newInstance(selectedDateString);
+        replaceFragment(fragment);
     }
 
     public void onClickBreakfastButton(View view) {
