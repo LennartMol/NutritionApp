@@ -18,6 +18,7 @@ import android.widget.DatePicker;
 import java.util.Calendar;
 import android.widget.Button;
 import android.widget.TextView;
+import androidx.fragment.app.FragmentManager;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -61,6 +62,21 @@ public class MainActivity extends AppCompatActivity {
                                 String formattedMonth = String.format("%02d", monthOfYear + 1); // Add leading zero if less than 10
                                 selectedDateString = formattedDay + "-" + (formattedMonth) + "-" + year;
                                 selectedDateTV.setText(selectedDateString);
+                                FragmentManager fragmentManager = getSupportFragmentManager();
+                                Fragment currentFragment = fragmentManager.findFragmentById(R.id.fcvFragment);
+                                if (currentFragment instanceof BreakfastFragment) {
+                                    BreakfastFragment fragment = BreakfastFragment.newInstance(selectedDateString);
+                                    replaceFragment(fragment);
+                                } else if (currentFragment instanceof LunchFragment) {
+                                    LunchFragment fragment = LunchFragment.newInstance(selectedDateString);
+                                    replaceFragment(fragment);
+                                } else if (currentFragment instanceof DinnerFragment) {
+                                    DinnerFragment fragment = DinnerFragment.newInstance(selectedDateString);
+                                    replaceFragment(fragment);
+                                } else {
+                                    int one = 1;
+                                }
+
 
                             }
                         },
