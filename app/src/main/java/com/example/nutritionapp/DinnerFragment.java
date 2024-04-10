@@ -21,21 +21,21 @@ import java.util.List;
 
 public class DinnerFragment extends Fragment {
 
-    private List<FoodItem> lunchItems;
-    private RecyclerView lunchView;
+    private List<FoodItem> dinnerItems;
+    private RecyclerView dinnerView;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_lunch, container, false);
-        lunchView = view.findViewById(R.id.dinnerView);
+        View view = inflater.inflate(R.layout.fragment_dinner, container, false);
+        dinnerView = view.findViewById(R.id.dinnerView);
         loadData();
         return view;
     }
 
     private void loadData() {
         String jsonData = loadJSONFromAsset("food_per_day.json");
-        lunchItems = parseMealData(jsonData, "10-04-2024", "dinner"); // Update date as needed
+        dinnerItems = parseMealData(jsonData, "10-04-2024", "dinner"); // Update date as needed
         updateUI();
     }
 
@@ -82,8 +82,8 @@ public class DinnerFragment extends Fragment {
 
     private void updateUI() {
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
-        lunchView.setLayoutManager(layoutManager);
-        FoodItemAdapter adapter = new FoodItemAdapter(lunchItems);
-        lunchView.setAdapter(adapter);
+        dinnerView.setLayoutManager(layoutManager);
+        FoodItemAdapter adapter = new FoodItemAdapter(dinnerItems);
+        dinnerView.setAdapter(adapter);
     }
 }
