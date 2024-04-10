@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -24,18 +25,32 @@ public class LunchFragment extends Fragment {
     private List<FoodItem> lunchItems;
     private RecyclerView lunchView;
 
+    private String selectedDateText;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_lunch, container, false);
-        lunchView = view.findViewById(R.id.dinnerView);
+        Bundle bundle = getArguments();
+        if (bundle != null) {
+            selectedDateText = bundle.getString("key");
+        }
+        lunchView = view.findViewById(R.id.lunchView);
         loadData();
         return view;
     }
 
+    public static LunchFragment newInstance(String data) {
+        LunchFragment fragment = new LunchFragment();
+        Bundle args = new Bundle();
+        args.putString("key", data);
+        fragment.setArguments(args);
+        return fragment;
+    }
+
     private void loadData() {
         String jsonData = loadJSONFromAsset("food_per_day.json");
-        lunchItems = parseMealData(jsonData, "10-04-2024", "lunch"); // Update date as needed
+        lunchItems = parseMealData(jsonData, selectedDateText, "lunch"); // Update date as needed
         updateUI();
     }
 

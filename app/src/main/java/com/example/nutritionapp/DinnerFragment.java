@@ -24,18 +24,32 @@ public class DinnerFragment extends Fragment {
     private List<FoodItem> dinnerItems;
     private RecyclerView dinnerView;
 
+    private String selectedDateText;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_dinner, container, false);
+        Bundle bundle = getArguments();
+        if (bundle != null) {
+            selectedDateText = bundle.getString("key");
+        }
         dinnerView = view.findViewById(R.id.dinnerView);
         loadData();
         return view;
     }
 
+    public static DinnerFragment newInstance(String data) {
+        DinnerFragment fragment = new DinnerFragment();
+        Bundle args = new Bundle();
+        args.putString("key", data);
+        fragment.setArguments(args);
+        return fragment;
+    }
+
     private void loadData() {
         String jsonData = loadJSONFromAsset("food_per_day.json");
-        dinnerItems = parseMealData(jsonData, "10-04-2024", "dinner"); // Update date as needed
+        dinnerItems = parseMealData(jsonData, selectedDateText, "dinner"); // Update date as needed
         updateUI();
     }
 

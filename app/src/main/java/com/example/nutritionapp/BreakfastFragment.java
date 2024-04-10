@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -28,23 +29,33 @@ public class BreakfastFragment extends Fragment {
     private List<FoodItem> breakfastItems;
     private RecyclerView breakfastView;
 
+    private String selectedDateText;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_breakfast, container, false);
-        breakfastView = view.findViewById(R.id.dinnerView);
+        Bundle bundle = getArguments();
+        if (bundle != null) {
+            selectedDateText = bundle.getString("key");
+        }
+        breakfastView = view.findViewById(R.id.breakfastView);
         loadData();
         return view;
+    }
 
-
+    public static BreakfastFragment newInstance(String data) {
+        BreakfastFragment fragment = new BreakfastFragment();
+        Bundle args = new Bundle();
+        args.putString("key", data);
+        fragment.setArguments(args);
+        return fragment;
     }
 
     private void loadData() {
         String jsonData = loadJSONFromAsset("food_per_day.json");
-        breakfastItems = parseBreakfastData(jsonData, "10-04-2024"); // should be based on the selected date in future
+        breakfastItems = parseBreakfastData(jsonData, String.valueOf(selectedDateText)); // should be based on the selected date in future
         updateUI();
-        int test = 1;
-
     }
 
     private String loadJSONFromAsset(String filename) {
