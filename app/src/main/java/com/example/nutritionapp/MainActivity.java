@@ -124,11 +124,23 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public void onClickAddBreakfastFoodButton(View view){
+    public void startAddFoodActivity(){
         setCurrentFragmentType();
         Intent intent = new Intent(MainActivity.this, AddFoodActivity.class);
         intent.putExtra("fragType", currentFragmentType);
         intent.putExtra("date", selectedDateString);
         startActivity(intent);
+    }
+
+    public void onClickAddBreakfastFoodButton(View view){
+        startAddFoodActivity();
+    }
+
+    public void onClickAddLunchFoodButton(View view){
+        startAddFoodActivity();
+    }
+
+    public void onClickAddDinnerFoodButton(View view){
+        startAddFoodActivity();
     }
 }
