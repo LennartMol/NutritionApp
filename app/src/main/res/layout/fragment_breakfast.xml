@@ -18,7 +18,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerView2"
+        android:id="@+id/breakfastView"
         android:layout_width="239dp"
         android:layout_height="195dp"
         android:layout_marginStart="64dp"
@@ -44,6 +44,6 @@
         android:layout_marginTop="20dp"
         android:text="Add food"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/recyclerView2" />
+        app:layout_constraintTop_toBottomOf="@+id/breakfastView" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
