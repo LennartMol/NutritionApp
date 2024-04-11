@@ -19,6 +19,10 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.ByteArrayOutputStream;
+
 public class NutritionValuesFragment extends Fragment {
 
     private List<FoodItem> totalValue;
@@ -47,7 +51,7 @@ public class NutritionValuesFragment extends Fragment {
     }
 
     private void loadData() {
-        String jsonData = loadJSONFromAsset("food_per_day.json");
+        String jsonData = loadJSONFromFile("food_per_day.json");
         List<FoodItem> breakfastItems = parseMealData(jsonData, selectedDateText, "breakfast");
         List<FoodItem> lunchItems = parseMealData(jsonData, selectedDateText, "lunch");
         List<FoodItem> dinnerItems = parseMealData(jsonData, selectedDateText, "dinner");
@@ -55,21 +59,35 @@ public class NutritionValuesFragment extends Fragment {
         updateUI();
     }
 
-    private String loadJSONFromAsset(String filename) {
+    private String loadJSONFromFile(String filename) {
         String json;
         try {
-            InputStream is = getActivity().getAssets().open(filename);
-            int size = is.available();
-            byte[] buffer = new byte[size];
-            is.read(buffer);
+            // Get the path to the file in the app's private files directory
+            File file = new File(getContext().getFilesDir(), filename);
+
+            // Create an InputStream for the file
+            InputStream is = new FileInputStream(file);
+
+            // Read the contents of the file into a byte array
+            ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+            byte[] buffer = new byte[1024];
+            int length;
+            while ((length = is.read(buffer)) != -1) {
+                byteArrayOutputStream.write(buffer, 0, length);
+            }
+
+            // Close the InputStream
             is.close();
-            json = new String(buffer, StandardCharsets.UTF_8);
+
+            // Convert the byte array to a String using UTF-8 encoding
+            json = byteArrayOutputStream.toString(StandardCharsets.UTF_8.name());
         } catch (IOException e) {
             e.printStackTrace();
             return null;
         }
         return json;
     }
+
 
     private List<FoodItem> parseMealData(String jsonData, String date, String mealType) {
         List<FoodItem> mealItems = new ArrayList<>();

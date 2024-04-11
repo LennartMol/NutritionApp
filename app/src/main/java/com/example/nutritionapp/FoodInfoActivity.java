@@ -11,6 +11,10 @@ import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import android.widget.TextView;
+
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
 import java.util.List;
 import java.util.ArrayList;
 import android.view.View;
@@ -23,6 +27,7 @@ import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.io.FileWriter;
 import java.io.IOException;
+import android.content.Context;
 
 public class FoodInfoActivity extends AppCompatActivity implements FetchProductTask.OnDataFetchedListener {
 
@@ -110,7 +115,7 @@ public class FoodInfoActivity extends AppCompatActivity implements FetchProductT
         try {
             //File file = new File(getContext().getFilesDir(), "food_per_day.json");
 
-            String jsonData = loadJSONFromAsset("food_per_day.json");
+            String jsonData = loadJSONFromFile("food_per_day.json");
             JSONObject jsonObject = new JSONObject(jsonData);
 
             // Get the JSONObject for the given date, creating a new one if it doesn't exist
@@ -123,21 +128,7 @@ public class FoodInfoActivity extends AppCompatActivity implements FetchProductT
                 dateObject.put("lunch", new JSONObject());
                 dateObject.put("dinner", new JSONObject());
                 jsonObject.put(date, dateObject);
-                writeJSONToFile(jsonObject.toString(), "food_per_day.json");
-            }
-
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-
-        try {
-            String jsonData = loadJSONFromAsset("food_per_day.json");
-            JSONObject jsonObject = new JSONObject(jsonData);
-
-            // Get the JSONObject for the given date, creating a new one if it doesn't exist
-            JSONObject dateObject = null;
-            if (jsonObject.has(date)) {
-                dateObject = jsonObject.getJSONObject(date);
+                writeJSONToFile(this,jsonObject.toString(), "food_per_day.json");
             }
 
             // Get the meal moment JSONObject (e.g., breakfastObject, lunchObject, dinnerObject)
@@ -154,23 +145,35 @@ public class FoodInfoActivity extends AppCompatActivity implements FetchProductT
             mealObject.put(food.getName(), foodObject);
 
             // Write the updated JSON data back to the file
-            writeJSONToFile(jsonObject.toString(), "food_per_day.json");
+            writeJSONToFile(this, jsonObject.toString(), "food_per_day.json");
 
         } catch (JSONException e) {
             e.printStackTrace();
         }
-
     }
 
-    private String loadJSONFromAsset(String filename) {
+    private String loadJSONFromFile(String filename) {
         String json;
         try {
-            InputStream is = this.getAssets().open(filename);
-            int size = is.available();
-            byte[] buffer = new byte[size];
-            is.read(buffer);
+            // Get the path to the file in the app's private files directory
+            File file = new File(this.getFilesDir(), filename);
+
+            // Create an InputStream for the file
+            InputStream is = new FileInputStream(file);
+
+            // Read the contents of the file into a byte array
+            ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+            byte[] buffer = new byte[1024];
+            int length;
+            while ((length = is.read(buffer)) != -1) {
+                byteArrayOutputStream.write(buffer, 0, length);
+            }
+
+            // Close the InputStream
             is.close();
-            json = new String(buffer, StandardCharsets.UTF_8);
+
+            // Convert the byte array to a String using UTF-8 encoding
+            json = byteArrayOutputStream.toString(StandardCharsets.UTF_8.name());
         } catch (IOException e) {
             e.printStackTrace();
             return null;
@@ -178,9 +181,20 @@ public class FoodInfoActivity extends AppCompatActivity implements FetchProductT
         return json;
     }
 
-    public static void writeJSONToFile(String jsonData, String filename) {
-        try (FileWriter file = new FileWriter(filename)) {
-            file.write(jsonData);
+    public static void writeJSONToFile(Context context, String jsonData, String filename) {
+        try {
+            // Get the path to the file in the app's private files directory
+            File file = new File(context.getFilesDir(), filename);
+
+            // Create a FileWriter to write to the file
+            FileWriter fileWriter = new FileWriter(file);
+
+            // Write the JSON data to the file
+            fileWriter.write(jsonData);
+
+            // Close the FileWriter
+            fileWriter.close();
+
             System.out.println("Successfully wrote JSON data to file: " + filename);
         } catch (IOException e) {
             e.printStackTrace();

@@ -30,7 +30,7 @@ public class MainActivity extends AppCompatActivity {
     private Button pickDateBtn;
     private TextView selectedDateTV;
     private String selectedDateString = "11-04-2024";
-    private String currentFragmentType = "Breakfast";
+    private String currentFragmentType = "breakfast";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,16 +69,16 @@ public class MainActivity extends AppCompatActivity {
                                 selectedDateString = formattedDay + "-" + (formattedMonth) + "-" + year;
                                 selectedDateTV.setText(selectedDateString);
                                 setCurrentFragmentType();
-                                if (currentFragmentType == "Breakfast") {
+                                if (currentFragmentType == "breakfast") {
                                     BreakfastFragment fragment = BreakfastFragment.newInstance(selectedDateString);
                                     replaceFragment(fragment);
-                                } else if (currentFragmentType == "Lunch") {
+                                } else if (currentFragmentType == "lunch") {
                                     LunchFragment fragment = LunchFragment.newInstance(selectedDateString);
                                     replaceFragment(fragment);
-                                } else if (currentFragmentType == "Dinner") {
+                                } else if (currentFragmentType == "dinner") {
                                     DinnerFragment fragment = DinnerFragment.newInstance(selectedDateString);
                                     replaceFragment(fragment);
-                                } else if (currentFragmentType == "NutritionValues"){
+                                } else if (currentFragmentType == "nutritionValues"){
                                     NutritionValuesFragment fragment = NutritionValuesFragment.newInstance(selectedDateString);
                                     replaceFragment(fragment);
                                 }
@@ -121,13 +121,13 @@ public class MainActivity extends AppCompatActivity {
         FragmentManager fragmentManager = getSupportFragmentManager();
         Fragment currentFragment = fragmentManager.findFragmentById(R.id.fcvFragment);
         if (currentFragment instanceof BreakfastFragment) {
-            currentFragmentType = "Breakfast";
+            currentFragmentType = "breakfast";
         } else if (currentFragment instanceof LunchFragment) {
-            currentFragmentType = "Lunch";
+            currentFragmentType = "lunch";
         } else if (currentFragment instanceof DinnerFragment) {
-            currentFragmentType = "Dinner";
+            currentFragmentType = "dinner";
         } else if (currentFragment instanceof NutritionValuesFragment){
-            currentFragmentType = "NutritionValues";
+            currentFragmentType = "nutritionValues";
         }
     }
 
