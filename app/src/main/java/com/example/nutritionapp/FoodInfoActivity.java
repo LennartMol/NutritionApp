@@ -70,10 +70,6 @@ public class FoodInfoActivity extends AppCompatActivity implements FetchProductT
         DateTV.setText(date);
 
         barcode = intent.getStringExtra("barcode");
-        //barcode = "3046920010047"; // dark chocolate
-        //barcode = "8718906105935"; // butterscotch (no name)
-        //barcode = "8004708048953"; // salt
-        barcode = "8718452695089";
         urlFull = String.format("%s%s.json", urlBase, barcode);
 
         // Execute AsyncTask
