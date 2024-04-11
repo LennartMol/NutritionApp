@@ -20,6 +20,12 @@ import android.widget.Button;
 import android.widget.TextView;
 import androidx.fragment.app.FragmentManager;
 
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.FileOutputStream;
+import android.util.Log;
+
 public class MainActivity extends AppCompatActivity {
     private Button pickDateBtn;
     private TextView selectedDateTV;
@@ -36,6 +42,7 @@ public class MainActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+        checkForFoodFile();
 
         BreakfastFragment fragment = BreakfastFragment.newInstance(selectedDateString);
         replaceFragment(fragment);
@@ -142,5 +149,46 @@ public class MainActivity extends AppCompatActivity {
 
     public void onClickAddDinnerFoodButton(View view){
         startScanFoodActivity();
+    }
+
+    public void checkForFoodFile(){
+        try {
+            // Get the path to the template file in the assets directory
+            String templateFilePath = "food_per_day.json";
+
+            // Get the destination file in the app's private files directory
+            File destinationFile = new File(this.getFilesDir(), templateFilePath);
+
+            // Check if the file already exists in the private files directory
+            if (!destinationFile.exists()) {
+                // File does not exist, so copy the template file from the assets directory
+
+                // Get the InputStream for the template file from the assets
+                InputStream inputStream = this.getAssets().open(templateFilePath);
+
+                // Create a FileOutputStream for the destination file
+                FileOutputStream outputStream = new FileOutputStream(destinationFile);
+
+                // Copy the template file from the assets to the app's private files directory
+                byte[] buffer = new byte[1024];
+                int length;
+                while ((length = inputStream.read(buffer)) > 0) {
+                    outputStream.write(buffer, 0, length);
+                }
+
+                // Close the streams
+                inputStream.close();
+                outputStream.close();
+
+                // Optionally, log the path to the saved template file for debugging
+                Log.d("TemplateFile", "Template file saved at: " + destinationFile.getAbsolutePath());
+            } else {
+                // File already exists in the private files directory, do nothing
+                Log.d("TemplateFile", "Template file already exists at: " + destinationFile.getAbsolutePath());
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }
