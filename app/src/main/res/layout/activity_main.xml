@@ -54,7 +54,7 @@
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/fcvFragment"
         android:layout_width="match_parent"
-        android:layout_height="500dp"
+        android:layout_height="800dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"

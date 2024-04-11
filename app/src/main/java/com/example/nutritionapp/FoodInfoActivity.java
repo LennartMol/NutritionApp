@@ -42,6 +42,8 @@ public class FoodInfoActivity extends AppCompatActivity implements FetchProductT
     private TextView DateTV;
     private FoodItem food;
 
+    private TextView StatusTextView;
+
 
 
     @Override
@@ -58,6 +60,7 @@ public class FoodInfoActivity extends AppCompatActivity implements FetchProductT
         infoView = findViewById(R.id.infoView);
         EatMomentTV = findViewById(R.id.EatMomentTextView);
         DateTV = findViewById(R.id.DateTextView);
+        StatusTextView = findViewById(R.id.statusTextView);
 
 
         Intent intent = getIntent();
@@ -67,9 +70,10 @@ public class FoodInfoActivity extends AppCompatActivity implements FetchProductT
         DateTV.setText(date);
 
         barcode = intent.getStringExtra("barcode");
-        //barcode = "3046920010047";
-        //barcode = "8718906105935";
-        barcode = "8004708048953";
+        //barcode = "3046920010047"; // dark chocolate
+        //barcode = "8718906105935"; // butterscotch (no name)
+        //barcode = "8004708048953"; // salt
+        barcode = "8718452695089";
         urlFull = String.format("%s%s.json", urlBase, barcode);
 
         // Execute AsyncTask
@@ -131,8 +135,12 @@ public class FoodInfoActivity extends AppCompatActivity implements FetchProductT
                 writeJSONToFile(this,jsonObject.toString(), "food_per_day.json");
             }
 
-            // Get the meal moment JSONObject (e.g., breakfastObject, lunchObject, dinnerObject)
             JSONObject mealObject = dateObject.getJSONObject(fragType);
+            if (mealObject.has(food.getName())) {
+                // Food item already exists, show message or handle as needed
+                StatusTextView.setText(String.format("Food item already exists in %s!", fragType));
+                return; // Exit the method
+            }
 
             // Create a new JSONObject for the food item and add its nutritional values
             JSONObject foodObject = new JSONObject();
@@ -146,6 +154,8 @@ public class FoodInfoActivity extends AppCompatActivity implements FetchProductT
 
             // Write the updated JSON data back to the file
             writeJSONToFile(this, jsonObject.toString(), "food_per_day.json");
+            StatusTextView.setText(String.format("Successfully added food item in %s!", fragType));
+
 
         } catch (JSONException e) {
             e.printStackTrace();

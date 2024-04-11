@@ -191,4 +191,22 @@ public class MainActivity extends AppCompatActivity {
             e.printStackTrace();
         }
     }
+    @Override
+    public void onResume() {
+        super.onResume();
+        setCurrentFragmentType();
+        if (currentFragmentType == "breakfast") {
+            BreakfastFragment fragment = BreakfastFragment.newInstance(selectedDateString);
+            replaceFragment(fragment);
+        } else if (currentFragmentType == "lunch") {
+            LunchFragment fragment = LunchFragment.newInstance(selectedDateString);
+            replaceFragment(fragment);
+        } else if (currentFragmentType == "dinner") {
+            DinnerFragment fragment = DinnerFragment.newInstance(selectedDateString);
+            replaceFragment(fragment);
+        } else if (currentFragmentType == "nutritionValues"){
+            NutritionValuesFragment fragment = NutritionValuesFragment.newInstance(selectedDateString);
+            replaceFragment(fragment);
+        }
+    }
 }
