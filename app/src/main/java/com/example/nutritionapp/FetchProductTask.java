@@ -86,11 +86,27 @@ public class FetchProductTask extends AsyncTask<String, Void, String> {
                 JSONObject nutrimentsObject = productObject.getJSONObject("nutriments");
 
                 String productName = productObject.getString("product_name");
+                if (productName.isEmpty()) {
+                    productName = "Product without name";
+                }
                 String productCarbs = nutrimentsObject.optString("carbohydrates_serving");
                 String productCalories = nutrimentsObject.optString("energy-kcal_serving");
                 String productProtein = nutrimentsObject.optString("proteins_serving");
                 String productFat = nutrimentsObject.optString("fat_serving");
 
+                // Check if nutrition values are empty and set default values if necessary
+                if (productCarbs.isEmpty()) {
+                    productCarbs = "0";
+                }
+                if (productCalories.isEmpty()) {
+                    productCalories = "0";
+                }
+                if (productProtein.isEmpty()) {
+                    productProtein = "0";
+                }
+                if (productFat.isEmpty()) {
+                    productFat = "0";
+                }
 
                 List<String> productDetailsList = new ArrayList<>();
                 productDetailsList.add(productName);

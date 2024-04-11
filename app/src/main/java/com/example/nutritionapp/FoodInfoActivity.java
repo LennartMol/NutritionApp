@@ -44,7 +44,9 @@ public class FoodInfoActivity extends AppCompatActivity implements FetchProductT
         fragType = intent.getStringExtra("fragType");
         date = intent.getStringExtra("date");
         barcode = intent.getStringExtra("barcode");
-        barcode = "3046920010047";
+        //barcode = "3046920010047";
+        //barcode = "8718906105935";
+        barcode = "8004708048953";
         urlFull = String.format("%s%s.json", urlBase, barcode);
 
         // Execute AsyncTask
